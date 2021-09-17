@@ -1,0 +1,522 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PeopleTree-Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <link href="/css/login.css" rel="stylesheet" />
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <style>
+        body {
+            height: 100%;
+            background-repeat: no-repeat;
+            background-image: url('/images/HRSM_BG_1920x1080.png');
+            background-size:auto;
+            position: relative;
+            background-repeat: repeat-y;
+        }
+
+    </style>
+
+    <style>
+        .errorClass {
+            border: 1px solid red;
+        }
+
+        .profile-name-card {
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0 0;
+            min-height: 1em;
+        }
+
+        .radio .checkbox {
+            margin-top: 0px;
+        }
+
+        .modal-md .modal-content {
+            height: 220px;
+        }
+
+        .modal-md p {
+            text-align: left;
+        }
+
+        .modal.fade {
+            left: -50%;
+            -webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
+            -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
+            -o-transition: opacity 0.3s linear, left 0.3s ease-out;
+            transition: opacity 0.3s linear, left 0.3s ease-out;
+        }
+
+            .modal.fade.in {
+                left: 45px;
+            }
+
+        //.btn-custom {
+            // margin-bottom: 10px !important;
+            //;
+        }
+    </style>
+
+
+
+
+
+
+
+    <script type="text/javascript">
+        var onloadCallback = function () {
+            grecaptcha.render('html_element', {
+                'sitekey': '6LcfZ8UaAAAAAB838n_xio08q2b565LCA-d0jjGM'
+            });
+        };
+    </script>
+
+    <script type="text/javascript">
+
+        window.localStorage.setItem("dymenu", '');
+		
+		 $(function () {
+            function rescaleCaptcha() {
+                var width = $('.g-recaptcha').parent().width();
+                var scale;
+                if (width < 302) {
+                    scale = width / 302;
+                } else {
+                    scale = 1.0;
+                }
+
+                $('.g-recaptcha').css('transform', 'scale(' + scale + ')');
+                $('.g-recaptcha').css('-webkit-transform', 'scale(' + scale + ')');
+                $('.g-recaptcha').css('transform-origin', '0 0');
+                $('.g-recaptcha').css('-webkit-transform-origin', '0 0');
+            }
+
+            rescaleCaptcha();
+            $(window).resize(function () { rescaleCaptcha(); });
+
+        });
+
+        $(document).ready(function () {
+
+            window.localStorage.setItem("dymenu", '');
+
+            window.localStorage.removeItem("dymenu");
+            window.localStorage.clear();
+
+
+            $("input").attr("autocomplete", "off");
+            window.scrollTo(0, 1);
+            var UserName = '';
+            var Password = '';
+            var CheckTrue = '';
+            var CheckFalse = '';
+            if (UserName) {
+                var value = UserName;
+                $("#Email").val(value);
+            }
+            if (Password) {
+                $("#Password").val(Password);
+            }
+            if (CheckTrue) {
+                $('#chkRememberMe').prop('checked', true);
+            }
+            if (CheckFalse) {
+                $('#chkRememberMe').prop('checked', false);
+            }
+        });
+
+
+
+        var message = '';
+        if (message)
+            //alert(message);
+
+            window.localStorage.setItem("dymenu", '');
+        window.localStorage.removeItem("dymenu");
+
+        window.localStorage.setItem("GEmpID", 0);
+        window.localStorage.removeItem("GEmpID")
+
+        window.localStorage.setItem("GEmpCode", '');
+        window.localStorage.removeItem("GEmpCode")
+
+        window.localStorage.setItem("GEmpName", '');
+        window.localStorage.removeItem("GEmpName");
+
+        var RS = window.localStorage.getItem("RS");
+        window.localStorage.setItem("RS", 0);
+        window.localStorage.removeItem("RS");
+
+        $(document).ready(function () {
+
+            var pageurl = window.location.href;
+            var sslhtml = $("#ssldiv").html();
+
+            if (pageurl.indexOf("peopletree") != -1) {
+                sslhtml = sslhtml.replace(/learnpro/g, 'peopletree');
+
+            }
+            $("#ssldiv").html(sslhtml);
+
+            jQuery("label[for='LogError']").html(message);
+
+            $("#LogError").html(message);
+
+            if (RS == 1) {
+                var Msg = "Password send successfully. Kindly check your email.";
+                $('#lblSuccessMSG').html(Msg);
+                $('#dvSave').modal({
+                    show: 'true'
+                });
+            }
+
+
+        });
+
+
+        function IsValidate() {
+            $('#txtLogin').removeClass('errorClass');
+            $('#txtPassword').removeClass('errorClass');
+            if ($('#txtLogin').val() == '') {
+                $('#txtLogin').addClass('errorClass');
+                return false;
+            }
+            if ($('#txtPassword').val() == '') {
+                $('#txtPassword').addClass('errorClass');
+                return false;
+            }
+
+
+            return true;
+        }
+        function fnShowMainDiv() {
+            $("#div1").show();
+
+        }
+
+        function fnRecoverPassword() {
+            $("#div1").hide();
+            $('#divFPwd').modal({
+                show: 'true'
+            });
+        }
+
+        $(document).ready(function () {
+            jQuery(window).load(function () {
+                $("#divFPwd").modal('hide');
+                //jQuery('#divFPwd').modal('show').on('hide.bs.modal', function (e) {
+                //e.preventDefault();
+                //});
+
+            });
+        });
+
+
+        function fnResendPassword() {
+            $('#txtEmpCode').removeClass('errorClass');
+            if ($('#txtEmpCode').val() == '') {
+                $('#txtEmpCode').addClass('errorClass');
+                return false;
+            }
+
+            $.ajax({
+                url: '/Login/ResendPassword',
+                type: "POST",
+                data: "{argvEmpCode: '" + $('#txtEmpCode').val() + "'}",
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                    if (data == -1) {
+                        var Msg = "There is no valid email id found for your request to send password. Please contact HR for registering email address in master records.";
+                        $('#Errormsg').html(Msg);
+                        $('#dvError').modal({
+                            show: 'true'
+                        });
+
+
+                    }
+                    if (data == 0) {
+                        var Msg = "Invalid Employee Code!";
+                        $('#Errormsg').html(Msg);
+                        $('#dvError').modal({
+                            show: 'true'
+                        });
+
+
+                    }
+
+                    if (data == 1) {
+
+
+                        window.localStorage.setItem("RS", 1);
+                        $("#divFPwd").modal('hide');
+                        $("#div1").show();
+                    }
+
+                },
+                error: function (xhr) {
+                    //alert(xhr.responseText);
+                    //alert("Error has occurred..");
+                }
+            });
+
+        }
+
+
+    </script>
+
+
+</head>
+<body>
+
+
+    <div id="divFPwd" data-backdrop="static" data-keyboard="false" class="modal fade" tabindex="-1" role="modal" aria-labelledby="myForgetModalLabel" aria-hidden="true" style="z-index:999999;">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick="fnShowMainDiv();">
+                        <span aria-hidden="true">×</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Recovery password</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Type your Emp Code:</p>
+                    <input type="text" name="txtEmpCode" placeholder="Employee Code" id="txtEmpCode" class="form-control" autocomplete="on" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="fnShowMainDiv();">Cancel</button>
+                    <button type="button" class="btn btn-custom" onclick="javscript: fnResendPassword();">Recover</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade" id="dvSave" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Success</h4>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <label for="Error" class="text-danger pull-right"></label>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img src="/images/success.jpg" style="width:30px;height:30px;" class="pull-left" />
+                            <label id="lblSuccessMSG" style="font-weight:normal; padding-left:10px; padding-top:6px;"></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-success pull-right" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+<form action="/" method="post"><input name="__RequestVerificationToken" type="hidden" value="l2EaFcU66W8z2_A0R8dri-RW-ECkZBPg_SBjIVko5NXfosKiHJoAbI59-UY5MgpkZexpiEqwZjAqeUbOnC4MxBERBs1C8KbKlomlSDVHAeM1" />        <div class="modal-lg center-block" id="div1" style="width:45%" >
+
+            <div class="modal-content log-in center-block">
+                <div class="modal-header">
+                    <img src="/images/peopletree_login.png" class="img img-responsive center-block" width="350" title="HRMS">
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="form-group">
+                        <input type="text" id="Email" name="Email" class="form-control input-lg" placeholder="Username" title="Username" required autofocus />
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="Password" name="password" class="form-control input-lg" placeholder="Password" title="Password" required />
+                    </div>
+
+                   <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div>
+                                <script src='https://www.google.com/recaptcha/api.js'></script><div class="g-recaptcha" data-sitekey="6LeT_MUaAAAAAOyXDrUkFeVOlX2rKwZ_tWI5k-5N"></div>
+                                
+                            </div>
+                        </div>
+                    </div>
+				
+                    <div class="form-group">
+                        <span class="pull-right"><input type="checkbox" id="chkRememberMe" name="chkRememberMe" title="Remember Me">Remember Me</span><span><a href="javascript:fnRecoverPassword();" title="Forgot Password">Forgot Password?</a></span>
+                        <br>
+                        <br>
+                        <input type="submit" class="btn btn-block btn-lg btn-warning" value="Sign In" title="Sign In" />
+                    </div>
+                    <div class="col-lg-12 center-block" style="text-align:center;word-break:break-all;">
+                        <label id="LogError" class="text-danger"></label>
+                    </div>
+                    <div class="form-group center-block" style="text-align:center;">
+                        
+                    </div>
+                    <div class="form-group">
+                        <p><strong>Note: It is recommended to use this with Google Chrome browser for best results.</strong></p>
+                        <div id="ssldiv">
+                            <table class="center-block" width="135" border="0" cellpadding="2" cellspacing="0" title="Click to Verify - This site chose GeoTrust SSL for secure e-commerce and confidential communications.">
+                                <tr>
+                                    <td width="135" align="center" valign="top">
+                                        <script type="text/javascript" src="https://seal.geotrust.com/getgeotrustsslseal?host_name=learnpro.centumlearning.com&amp;size=S&amp;lang=en"></script><br />
+                                        <a href="http://www.geotrust.com/ssl/" target="_blank" style="color:#000000; text-decoration:none; font:bold 7px verdana,sans-serif; letter-spacing:.5px; text-align:center; margin:0px; padding:0px;"></a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <img src="/images/Untitled-1.png" class="img-responsive center-block img_logo" width="150">
+        </div>
+</form>    
+
+
+
+    <div id="particles-js"></div>
+    <script>
+        $.getScript("/js/particles.min.js", function () {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ffffff"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        },
+                        "image": {
+                            "width": 100,
+                            "height": 100
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.4,
+                        "random": false,
+                        "anim": {
+                            "enable": false,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 5,
+                        "random": true,
+                        "anim": {
+                            "enable": false,
+                            "speed": 40,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#ffffff",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 6,
+                        "direction": "none",
+                        "random": false,
+                        "straight": false,
+                        "out_mode": "out",
+                        "attract": {
+                            "enable": false,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "repulse"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 400,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "bubble": {
+                            "distance": 400,
+                            "size": 40,
+                            "duration": 2,
+                            "opacity": 8,
+                            "speed": 3
+                        },
+                        "repulse": {
+                            "distance": 200
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                        "remove": {
+                            "particles_nb": 2
+                        }
+                    }
+                },
+                "retina_detect": true,
+                "config_demo": {
+                    "hide_card": false,
+                    "background_color": "#b61924",
+                    "background_image": "",
+                    "background_position": "50% 50%",
+                    "background_repeat": "no-repeat",
+                    "background_size": "cover"
+                }
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>
